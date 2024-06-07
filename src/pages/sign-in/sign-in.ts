@@ -20,9 +20,13 @@ import { MessagesService } from '../../services/messages';
   templateUrl: 'sign-in.html'
 })
 export class SignIn {
-  cities = [];
-  private anyError:Boolean = false;
-  private errorMessage:String = "";
+  cities = [
+    // { name: 'customer.name', value: 'customer.url', supportUrl: 'customer.support_url' },
+    { name: 'Treinamento', value: 'https://treinamento.idiario.net.br', supportUrl: '' }
+
+  ];
+  private anyError: Boolean = false;
+  private errorMessage: String = "";
   selectedCity;
   isOnline: Boolean = false;
   supportUrl: string = "";
@@ -40,20 +44,20 @@ export class SignIn {
     private messages: MessagesService,
     private cdr: ChangeDetectorRef,
     private npsService: NpsService
-  ){}
+  ) { }
 
-  ionViewWillEnter(){
+  ionViewWillEnter() {
     this.isOnline = this.connection.isOnline;
     this.changeInputMunicipios(this.isOnline);
     this.connection.eventOnline.subscribe((online) => this.changeInputMunicipios(online));
   }
 
-  changeInputMunicipios(online){
+  changeInputMunicipios(online) {
     this.isOnline = online;
-    if(!this.isOnline){
+    if (!this.isOnline) {
       this.selectedCity = undefined;
-      this.messages.showToast('Sem conexão!',1000,'top');
-    }else{
+      this.messages.showToast('Sem conexão!', 1000, 'top');
+    } else {
       this.getCustomers();
     }
   }
@@ -64,14 +68,14 @@ export class SignIn {
     this.supportUrl = this.selectedCity ? this.selectedCity.supportUrl || defaultSupport : "";
   }
 
-  getCustomers(){
-    this.customersService.getCustomers().subscribe( data => {
+  getCustomers() {
+    this.customersService.getCustomers().subscribe(data => {
       this.cities = data;
       this.cdr.detectChanges();
     });
   }
 
-  loginForm(form: NgForm ){
+  loginForm(form: NgForm) {
 
     const credential = form.value.credential;
     const password = form.value.password;
@@ -85,16 +89,16 @@ export class SignIn {
       (user: User) => {
         this.auth.setCurrentUser(user);
         this.npsService.startNps(user);
-        this.navCtrl.push(AppIndexPage, {'user': user});
+        this.navCtrl.push(AppIndexPage, { 'user': user });
       },
-    (error) => {
-      this.anyError = true;
-      this.errorMessage = "Não foi possível efetuar login.";
-      loading.dismiss();
-    },
-    () => {
-      loading.dismiss();
-    })
+      (error) => {
+        this.anyError = true;
+        this.errorMessage = "Não foi possível efetuar login.";
+        loading.dismiss();
+      },
+      () => {
+        loading.dismiss();
+      })
   }
 
   greetingText() {
@@ -104,9 +108,9 @@ export class SignIn {
 
     let greeting = "bom dia";
 
-    if(currentHour >= split_afternoon && currentHour <= split_evening) {
+    if (currentHour >= split_afternoon && currentHour <= split_evening) {
       greeting = 'boa tarde';
-    } else if(currentHour >= split_evening) {
+    } else if (currentHour >= split_evening) {
       greeting = 'boa noite';
     }
 

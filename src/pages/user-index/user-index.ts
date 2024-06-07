@@ -29,7 +29,7 @@ export class UserIndexPage {
     private storage: Storage,
     private messages: MessagesService,
     private npsService: NpsService,
-    public device: Device
+    public device: Device 
   ) {
     this.getDeployInfo();
     this.storage.get('user').then((user) => {

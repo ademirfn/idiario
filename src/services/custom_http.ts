@@ -47,6 +47,7 @@ export class CustomHttp extends Http {
 
     if (options.headers) options.headers.append('Access-Token', '@@ACCESSTOKEN');
     else options.headers = new Headers({'Access-Token': '@@ACCESSTOKEN'});
+    console.log(options)
 
     return options;
   }
